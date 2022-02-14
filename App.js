@@ -1,18 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { useEffect, useState } from 'react'
-import { reqSend } from './Api_functions.js'
+import { reqSend } from './ApiFunctions.js'
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as React from 'react';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
-  const [productInfo, setProductInfo] = useState(null);
-  const [allergenInfo, setAllergenInfo] = useState(null);
-  
-  ////////////////////////////////////////////////////////////////
-  /////////////////// Barcode Scanner functions //////////////////
-  ////////////////////////////////////////////////////////////////
+const Stack = createNativeStackNavigator();
+
+function ResultScreen({route, navigation}) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {route.params.route.product.known_ingredients_n ? 
+          <View>
+            <Text>{JSON.stringify(route.params.route.product.product_name)}</Text>
+            <Text>Known Ingredients: {JSON.stringify(route.params.route.product.ingredients_text)}</Text>
+            <Text>Allergens: {JSON.stringify(route.params.route.product.allergens_from_ingredients)}</Text>
+          </View>
+        : 
+          <>{route.params.route.product.product_name ? 
+          <Text>{JSON.stringify(route.params.route.product.product_name)} currently has no ingredients uploaded.
+          Please consider uploading the ingredients to help future users.</Text>
+        :
+          <Text>Sorry, this item currently doesn't exist in the database. Please consider uploading it to help future users. </Text>}
+          </>
+        }
+      </View>
+    )
+  }
+
+
+function ScannerScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -21,99 +43,63 @@ export default function App() {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    getData(`${data}`)
-  };
-
-  // if (hasPermission === null) {
-  //   return <Text>Requesting for camera permission</Text>;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
-
-  ////////////////////////////////////////////////////////////////
-
-  // var barcode = '5740900805408';
-  // var barcode = '20797232';
-  // var barcode = '4056489558019'; //No match in database
-  // var barcode = '4056489559795'; // Has match but no ingredients - app should check for this
-  // var barcode = '20425609';
-
   function getData(barcode) {
-    reqSend(barcode).then(result => {
-      if (result.status === 0) {
-        console.log(`The item with barcode ${barcode} was not found in the database, please consider uploading it to help future users`)
-      } else if(result.status===1){
-      console.log(`reqSend status: ${result.status}`)
-      setProductInfo(result);
-      return result
-      }})
-    .catch(error => {
-      console.log(`There was an error ${error}`)
+    return new Promise(function(resolve, reject) {
+      reqSend(barcode).then(function (response) {
+        if(response != undefined) {
+          console.log(`getData executed successfully returning ${response}`)
+          resolve(response);
+        } else {
+          reject(Error("Error in getData()"))
+        }
+      })
     })
   }
 
-  // Sets allergenData any time that productInfo changes
-  useEffect(() => {
-    console.log("productInfo changed")
-    if (productInfo != null) {
-    setAllergenData();
-    }
-  }, [productInfo])
+  function handleBarCodeScanned({ type, data }) {
+    setScanned(true);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    getData(`${data}`).then(function (response) {
+      console.log(`data received into handleBarCodeScanned: ${JSON.stringify(response.status)}`)
+      if(response.status === 0){
+        alert(`Sorry, no product with barcode ${data} is currently in the database. Please consider uploading it to help future users!`);
+        setScanned(false);
+      } else {
+        console.log(`${response.product.allergens_from_ingredients}`);
+        navigation.navigate('Results', {route: response});
+        setScanned(false);
+      }
+    })
+  };
 
-  useEffect(() => {
-    if (allergenInfo != null && productInfo != null) {
-      displayAllergenData();
-    }
-  }, [allergenInfo])
-
-  function setAllergenData() {
-    setAllergenInfo(productInfo.product.allergens_from_ingredients);
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
   }
 
-  function displayAllergenData() {
-    if (productInfo.product.known_ingredients_n != undefined) {
-      console.log(`Allergens found`)
-      console.log(`${productInfo.product.product_name} contains allergens: ${allergenInfo}`);
-    } else {
-      console.log(`No ingredient list`)
-      console.log(`${productInfo.product.product_name} is in the database, but has no ingredients listed, consider uploading them to help fellow users`)
-    }
-  }
 
   return (
-    // <View style={styles.container}>
-    //   <Button 
-    //     title="Lurpack"
-    //     onPress={() => {
-    //       getData('5740900805408');
-    //     }}
-    //   />
-    //   <Button 
-    //     title="Chorizo"
-    //     onPress={() => {
-    //       getData('4056489559795');
-    //     }}
-    //   />
-    //   <Button 
-    //     title="Unknown"
-    //     onPress={() => {
-    //       getData('4056489558019');
-    //     }}
-    //   />
-    //   <Text>Make the API call</Text>
-    //   <StatusBar style="auto" />
-    // </View>
     <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      {/* {scanned && <Button title={'View Results'} onPress={() => {setScanned(false); navigation.navigate('Results')}} />} */}
     </View>
+  )
+}
+
+export default function App() {
+  
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Scanner" component={ScannerScreen} />
+        <Stack.Screen name="Results" component={ResultScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
