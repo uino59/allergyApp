@@ -15,3 +15,16 @@ export function reqSend(barcode) {
     })
     
   }
+
+export function getData(barcode) {
+    return new Promise(function(resolve, reject) {
+      reqSend(barcode).then(function (response) {
+        if(response != undefined) {
+          console.log(`getData executed successfully returning ${response}`)
+          resolve(response);
+        } else {
+          reject(Error("Error in getData()"))
+        }
+      })
+    })
+  }

@@ -1,13 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { useEffect, useState } from 'react'
-import { reqSend } from '../../services/ApiCalls/ApiFunctions'
+import { getData } from '../../services/ApiCalls/index'
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as React from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 import { ResultScreen } from '../ResultScreen/index';
+import NavigationBar from '../../components/NavigationBar/index';
+import { styles } from './styles';
+
 
 
 export function ScannerScreen() {
@@ -23,18 +25,7 @@ export function ScannerScreen() {
       })();
     }, []);
   
-    function getData(barcode) {
-      return new Promise(function(resolve, reject) {
-        reqSend(barcode).then(function (response) {
-          if(response != undefined) {
-            console.log(`getData executed successfully returning ${response}`)
-            resolve(response);
-          } else {
-            reject(Error("Error in getData()"))
-          }
-        })
-      })
-    }
+    
   
     function handleBarCodeScanned({ type, data }) {
       setScanned(true);
@@ -67,16 +58,7 @@ export function ScannerScreen() {
           style={StyleSheet.absoluteFillObject}
         />
         {/* {scanned && <Button title={'View Results'} onPress={() => {setScanned(false); navigation.navigate('Results')}} />} */}
+        <NavigationBar></NavigationBar>
       </View>
     )
   }
-
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
