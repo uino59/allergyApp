@@ -1,18 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { getData } from '../../services/ApiCalls/index'
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { ResultScreen } from '../ResultScreen/index';
 import NavigationBar from '../../components/NavigationBar/index';
-import { styles } from './styles';
+import styles from './styles';
 
 
 
-export function ScannerScreen() {
+export default function ScannerScreen() {
     
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);

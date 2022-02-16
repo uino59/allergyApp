@@ -2,12 +2,12 @@ import { View, TextInput, KeyboardAvoidingView, Alert } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { styles } from './styles';
+import styles from './styles';
 import NavigationBar from '../../components/NavigationBar/index';
 import SearchButton from '../../components/SearchButton/index';
-import {getData} from '../../services/ApiCalls/index';
+import { getData } from '../../services/ApiCalls/index';
 
-export function ManualInputScreen() {
+export default function ManualInputScreen() {
     const navigation = useNavigation();
     const [barcode, setBarcode] = useState(null);
 

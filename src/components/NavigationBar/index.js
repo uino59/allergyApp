@@ -3,7 +3,7 @@ import React from 'react';
 import { House, Barcode } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { iconColour } from '../../assets/GlobalStyles/styles';
-import { styles } from './styles';
+import styles from './styles';
 
 const NavigationBar = () => {
     const navigation = useNavigation();

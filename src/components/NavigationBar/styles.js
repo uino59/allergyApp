@@ -1,9 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export default styles = StyleSheet.create({
     navigationBarContainer: {
-        // position:'absolute',
-        // bottom: 0,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'space-between',

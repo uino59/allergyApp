@@ -3,14 +3,14 @@ import NavigationBar from '../../components/NavigationBar/index';
 import { User, Barcode, Keyboard } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { iconColour } from '../../assets/GlobalStyles/styles';
-import { styles } from './styles';
+import styles from './styles';
 
 import HomeScreenButton from '../../components/HomeScreenButton';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export function HomeScreen() {
+export default function HomeScreen() {
 
     const navigation = useNavigation();
 
