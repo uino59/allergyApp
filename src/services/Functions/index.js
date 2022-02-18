@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import React from 'react';
 import { Platform } from 'react-native';
 import AppLink from 'react-native-app-link';
 

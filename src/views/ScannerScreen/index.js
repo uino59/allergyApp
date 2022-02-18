@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { getData } from '../../services/ApiCalls/index'
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import * as React from 'react';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import NavigationBar from '../../components/NavigationBar/index';
@@ -32,7 +32,7 @@ export default function ScannerScreen() {
       getData(`${data}`).then(function (response) {
         console.log(`data received into handleBarCodeScanned: ${JSON.stringify(response.status)}`)
         if(response.status === 0){
-          alert(`Sorry, no product with barcode ${data} is currently in the database. Please consider uploading it to help future users!`);
+          navigation.navigate('Results', {route: response});
           setScanned(false);
         } else {
           console.log(`${response.product.allergens_from_ingredients}`);

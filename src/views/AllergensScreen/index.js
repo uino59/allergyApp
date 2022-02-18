@@ -2,10 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { View, SafeAreaView, ScrollView } from 'react-native';
 import { SettingsSwitch } from 'react-native-settings-components';
 import { useState } from 'react';
-import * as React from 'react';
+import React from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { saveUserData } from '../../services/Functions/index'
-
 
 import styles from './styles'
 import NavigationBar from '../../components/NavigationBar/index';

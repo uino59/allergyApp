@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, TextInput, KeyboardAvoidingView, Alert, SafeAreaView } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 
 import styles from './styles';
 import NavigationBar from '../../components/NavigationBar/index';
