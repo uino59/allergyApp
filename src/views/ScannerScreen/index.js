@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { getData } from '../../services/ApiCalls/index'
@@ -57,6 +58,7 @@ export default function ScannerScreen() {
         />
         {/* {scanned && <Button title={'View Results'} onPress={() => {setScanned(false); navigation.navigate('Results')}} />} */}
         <NavigationBar></NavigationBar>
+        <StatusBar style="dark" />
       </View>
     )
   }

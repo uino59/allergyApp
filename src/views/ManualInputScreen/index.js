@@ -1,4 +1,5 @@
-import { View, TextInput, KeyboardAvoidingView, Alert } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { View, TextInput, KeyboardAvoidingView, Alert, SafeAreaView } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -25,35 +26,38 @@ export default function ManualInputScreen() {
     
     return(
         <View style={styles.container}>
-            <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.container}>
-            <View style={styles.contentContainer}>
-                
-                <TextInput
-                    style={styles.input}
-                    onChangeText={newString => setBarcode(newString)}
-                    placeholder={"Enter a barcode..."}
-                    placeholderTextColor="#aaaaaa"
-                ></TextInput> 
-                <SearchButton
-                    onPress={() => {
-                        if(barcode != undefined) {
-                            console.log(barcode)
-                            handleBarCodeInput(barcode);
-                        } else {
-                            Alert.alert(
-                                'Invalid Input',
-                                'Please enter a valid barcode number'
-                            )
-                        }
-                        } 
-                    }   
-                />
-                
-            </View>  
-            </KeyboardAvoidingView>
+            <SafeAreaView style={styles.container}>
+                <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.container}>
+                <View style={styles.contentContainer}>
+                    
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={newString => setBarcode(newString)}
+                        placeholder={"Enter a barcode..."}
+                        placeholderTextColor="#aaaaaa"
+                    ></TextInput> 
+                    <SearchButton
+                        onPress={() => {
+                            if(barcode != undefined) {
+                                console.log(barcode)
+                                handleBarCodeInput(barcode);
+                            } else {
+                                Alert.alert(
+                                    'Invalid Input',
+                                    'Please enter a valid barcode number'
+                                )
+                            }
+                            } 
+                        }   
+                    />
+                    
+                </View>  
+                </KeyboardAvoidingView>
+            </SafeAreaView>
             <NavigationBar />
+            <StatusBar style="dark" />
         </View>
         
         

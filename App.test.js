@@ -1,6 +1,5 @@
-import { reqSend } from './Api_functions.js'
+import { reqSend } from './src/services/ApiCalls/index'
 import fetch from 'isomorphic-fetch';
-import { useState } from 'react';
 
 describe("api tests for openfoodfacts api", () => {
     it("given a barcode 5740900805408, reqSend() returns object with allergens_from_ingredients property: 'en:milk, butter, milk, milk'", 
