@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Dimensions, SafeAreaView } from 'react-native';
+import { View, Dimensions, SafeAreaView, Image } from 'react-native';
 import NavigationBar from '../../components/NavigationBar/index';
 import { User, Barcode, Keyboard, Prohibit } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -22,10 +22,12 @@ export default function HomeScreen() {
 
     return (
         <View style={styles.container}>
-            <SafeAreaView style={styles.container}>          
+            <SafeAreaView style={styles.container}>  
+                  
                 <View style={styles.contentContainer}>
+                
                     <View style={styles.homeButtonDoubleContainer}>
-                        <HomeScreenButton
+                       <HomeScreenButton
                             icon={<Prohibit color={iconColour} size={iconSize} ></Prohibit>}
                             text="Allergies"
                             onPress={() => {navigation.navigate('Allergens')}}
@@ -47,6 +49,11 @@ export default function HomeScreen() {
                             buttonSize={buttonSize}
                         />
                     </View>
+                    <Image
+                    style={styles.logo}
+                    source={require('../../assets/images/logo.png')}
+                
+                /> 
                 </View>
             
             </SafeAreaView>

@@ -7,8 +7,14 @@ export default styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-end',
     },
+    logo: {
+      width: 300,
+      height: 100,
+      margin: 50,
+      borderRadius: 20,
+    },
     contentContainer: {
-      flex: 1,
+      flex: 4,
       // backgroundColor: 'lightgray',
       alignItems: 'center',
       justifyContent: 'flex-start',
