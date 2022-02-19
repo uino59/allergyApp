@@ -5,10 +5,9 @@ import SettingsList from 'react-native-settings-list';
 import { useState } from 'react';
 import React from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { saveUserData } from '../../services/Functions/index'
+import { saveUserData } from '../../services/Functions/index';
 
-import styles from './styles'
-import SettingsItem from '../../components/SettingsItem'
+import styles from './styles';
 import NavigationBar from '../../components/NavigationBar/index';
 
 export default function AllergensScreen() {
